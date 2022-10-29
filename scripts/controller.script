@@ -1,0 +1,27 @@
+playerColor = 0
+score = 0
+firstOpened = false
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("Start") then
+		for i, id in ipairs(idObject) do
+			msg.post(id, "revial")
+		end
+	end
+
+	if message_id == hash("Hide") then
+		for i, id in ipairs(idObject) do
+			msg.post(id, "hide")
+		end
+		msg.post("/cursor#cursor", "takeInput")
+	end
+
+	if message_id == hash("endOfGame") then
+		msg.post("/cursor#cursor", "gameOver")
+		msg.post("/gui#gui", "endOfGame")
+	end
+
+	if message_id == hash("Restart") then
+		msg.post("@system:", "reboot") 
+	end
+end

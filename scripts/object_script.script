@@ -1,0 +1,36 @@
+go.property("type", 0)
+local allreadyOpened = false
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("revial") then
+		if self.type == 1 then
+			msg.post("#sprite", "play_animation", {id = hash("circle_blue")})
+		elseif self.type == 2 then
+			msg.post("#sprite", "play_animation", {id = hash("circle_red")})
+		end
+	elseif message_id == hash("hide") then
+		msg.post("#sprite", "play_animation", {id = hash("circle_basic")})
+	end
+
+	if message_id == hash("openOne") and not allreadyOpend then
+		if not firstOpened then
+			playerColor = self.type
+			firstOpened = true
+		end
+
+		if self.type == 1 then
+			msg.post("#sprite", "play_animation", {id = hash("circle_blue")})
+		elseif self.type == 2 then
+			msg.post("#sprite", "play_animation", {id = hash("circle_red")})
+		end
+
+		if self.type == playerColor then
+			score = score + 1
+			msg.post("/gui#gui", "updateScore")
+		else
+			msg.post("/contoller#controller", "endOfGame")
+		end
+
+		allreadyOpened = true
+	end
+end
